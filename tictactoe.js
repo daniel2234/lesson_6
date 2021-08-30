@@ -3,9 +3,11 @@ const readline = require('readline-sync');
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = '0';
-
+//2
 function displayBoard(board) {
-  console.clear();
+  console.clear(); //clears the node console when display
+
+  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
 
   console.log('');
   console.log('     |     |');
@@ -22,79 +24,107 @@ function displayBoard(board) {
   console.log('');
 }
 
-function emptySquares(board) {
-  return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
-}
-
 function prompt(message){
   console.log(`=>${message}`);
+}
+
+function emptySquares(board) {
+  return Object.keys(board).filter(key => board[key] === INITIAL_MARKER);
 }
 
 function boardFull(board) {
   return emptySquares(board).length === 0;
 }
 
-function initializeBoard() {
-  let board = {}
+function someoneWon(board) {
+  return !!detectWinner(board); //!! inverts that object boolean and turn 0, null, 0
+}
 
-  for(let square = 1; square <= 9; square++) {
+//create a new board
+function initializeBoard() {
+  let board = {} //intialize and declare an empty board object
+
+  for(let square = 1; square <= 9; square++) { //create an object that that has a key from 1-9 with an intial marker of ''
     board[String(square)] = INITIAL_MARKER;
   }
 
-  return board;
+  return board; //return the board object once it has been created.
 }
 
-function someoneWon(board){
-  return false;
+function playerSquaresBoard(board) {
+  let square; //declared here so we can use it outside the loop
+
+  while(true) {
+    prompt(`Choose a square (${joinOr(emptySquares(board))}):`);
+    square = readline.question().trim();
+    
+    if(emptySquares(board).includes(square)) break; 
+
+    prompt("Sorry, that's not a valid choice.")
+  }
+
+  board[square] = HUMAN_MARKER;
 }
 
-function computerChoosesSquare(board) {
-
+function computerSquaresBoard(board) {
   let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-  
+
   let square = emptySquares(board)[randomIndex];
   board[square] = COMPUTER_MARKER;
 }
 
-function playerChoosesSquare(board){
-  let square; //declared here so you can use outside the loop
-
-  console.log(emptySquares);
-
-  while(true) {
-    prompt(`Choose a square (${emptySquares(board).join(', ')})`);
-    square = readline.question().trim(); //input trimmed to allows spaces in input
-    if (emptySquares(board).includes(square)) break;
-
-    prompt("Sorry, that's not a valid choice");
-  }  
-}
-
 function detectWinner(board) {
   let winningLines = [
-    [1, 2, 3], [4, 5, 6], [7, 8, 9], 
-    [1, 4, 7], [2, 5, 8], [3, 6, 9], 
-    [1, 5, 9], [3, 5, 7]             
+    [1,2,3], [4,5,6], [7,8,9], //rows
+    [1,4,6], [2,5,7], [3,6,9], //columns
+    [1,5,9], [3,5,7],          //diagonals
   ];
 
-  for(let i = 0; i < winningLines.length; i++){
-    let [sq1, sq2, sq3] = winningLines[i];
-  }
-}
+  for(let line = 0; line < winningLines.length; line++){
+    let [sq1, sq2, sq3] = winningLines[line];
 
-let board = initializeBoard();
-displayBoard(board);
+    if (
+      board[sq1] === HUMAN_MARKER &&
+      board[sq2] === HUMAN_MARKER &&
+      board[sq3] === HUMAN_MARKER
+    ) {
+      return 'Player';
+    } else if (
+      board[sq1] === COMPUTER_MARKER &&
+      board[sq2] === COMPUTER_MARKER &&
+      board[sq3] === COMPUTER_MARKER
+    ) {
+      return 'Computer'
+    } 
+  }
+
+  return null;
+}
 
 while(true) {
-  playerChoosesSquare(board);
-  computerChoosesSquare(board);
+  let board = initializeBoard();
+
+  while (true) {
+    displayBoard(board); 
+
+    playerSquaresBoard(board);
+    if(someoneWon(board) || boardFull(board)) break;
+
+    computerSquaresBoard(board);
+    if(someoneWon(board) || boardFull(board)) break;
+  }
+
   displayBoard(board);
 
-  if (someoneWon(board) || boardFull(board)) break;
+  if(someoneWon(board)) {
+    prompt(`${detectWinner(board)} won!`);
+  } else {
+    prompt(`It's a tie!`);
+  }
+
+  prompt('Play again? (y or n)');
+  let answer = readline.question().toLowerCase()[0];
+  if (answer !== 'y') break;
 }
 
-if(someoneWon(board)){
-  prompt(`${detectWinner(board)} won!`)
-} else {
-  prompt("It's a tie!");
-}
+prompt('Thanks for playing Tic Tac Toe!');
