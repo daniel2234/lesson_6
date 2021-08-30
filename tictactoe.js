@@ -39,6 +39,18 @@ function boardFull(board) {
 function someoneWon(board) {
   return !!detectWinner(board); //!! inverts that object boolean and turn 0, null, 0
 }
+//made a custom joinOr function
+function joinOr(array, delimiter = ', ', orand = 'or') {
+
+  if (array.length === 0) return "";
+  if (array.length === 1) return String(array[0]);
+  if (array.length === 2) return array.join(` ${orand} `);
+
+  let firstSection =  array.slice(0, array.length - 1)
+  let lastSection = array[array.length - 1];
+
+  return firstSection.join(`${delimiter}`) + `${delimiter}` + `${orand} ` + lastSection;
+}
 
 //create a new board
 function initializeBoard() {
