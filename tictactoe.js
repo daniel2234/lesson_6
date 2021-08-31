@@ -3,11 +3,13 @@ const readline = require('readline-sync');
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = '0';
+
+const MAX_TOTAL_SCORE = 5;
 //2
 function displayBoard(board) {
   console.clear(); //clears the node console when display
 
-  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
+  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}. Max Games to Play is ${MAX_TOTAL_SCORE}`);
 
   console.log('');
   console.log('     |     |');
@@ -85,15 +87,17 @@ function computerSquaresBoard(board) {
   board[square] = COMPUTER_MARKER;
 }
 
+
+
 function detectWinner(board) {
-  let winningLines = [
+  const WINNING_LINES = [
     [1,2,3], [4,5,6], [7,8,9], //rows
-    [1,4,6], [2,5,7], [3,6,9], //columns
+    [1,4,7], [2,5,8], [3,6,9], //columns
     [1,5,9], [3,5,7],          //diagonals
   ];
 
-  for(let line = 0; line < winningLines.length; line++){
-    let [sq1, sq2, sq3] = winningLines[line];
+  for(let line = 0; line < WINNING_LINES.length; line++){
+    let [sq1, sq2, sq3] = WINNING_LINES[line];
 
     if (
       board[sq1] === HUMAN_MARKER &&
@@ -113,38 +117,91 @@ function detectWinner(board) {
   return null;
 }
 
-while(true) {
-  let board = initializeBoard();
 
-  while (true) {
-    displayBoard(board); 
+// function playerWins() {
+//   return 1
+// }
 
-    playerSquaresBoard(board);
-    if(someoneWon(board) || boardFull(board)) break;
-
-    computerSquaresBoard(board);
-    if(someoneWon(board) || boardFull(board)) break;
-  }
-
-  displayBoard(board);
-
-  if(someoneWon(board)) {
-    prompt(`${detectWinner(board)} won!`);
-  } else {
-    prompt(`It's a tie!`);
-  }
-
-  prompt('Play again? (y or n)');
-  let answer = readline.question().toLowerCase()[0];
-  if (answer !== 'y') break;
+function computerWins() {
+  return 1;
 }
 
-prompt('Thanks for playing Tic Tac Toe!');
+while(true) {
+  let playerWins = 0;
+  let computerWins = 0;
+    while(true) {
+      let scorer;
+      let board = initializeBoard();
 
+      while (true) {
+        displayBoard(board); 
+        playerSquaresBoard(board);
+        if(someoneWon(board) || boardFull(board)) break;
+
+        computerSquaresBoard(board);
+        if(someoneWon(board) || boardFull(board)) break;
+      }
+
+      displayBoard(board);
+
+      if(someoneWon(board)) {
+        prompt(`${detectWinner(board)} won!`);
+        if(detectWinner(board) === 'Player') {
+          playerWins += 1;
+          console.log(playerWins);
+        } else if(detectWinner(board) === 'Computer'){
+          computerWins += 1;
+          console.log(computerWins);
+        }
+      } else {
+        prompt(`It's a tie!`);
+      }
+
+      prompt('Play again? (y or n)');
+      let answer = readline.question().toLowerCase()[0];
+      if (answer !== 'y') break;
+    }
+
+    prompt('Thanks for playing Tic Tac Toe!');
+
+}
+
+// let playerWins = 0;
+// while(true) {
+//   // let playerWins = 0;
+//   let computerWins = 0;
+//   let scorer;
+//   let board = initializeBoard();
+
+//   while (true) {
+//     displayBoard(board); 
+//     playerSquaresBoard(board);
+//     if(someoneWon(board) || boardFull(board)) break;
+
+//     computerSquaresBoard(board);
+//     if(someoneWon(board) || boardFull(board)) break;
+//   }
+
+//   displayBoard(board);
+
+//   if(someoneWon(board)) {
+//     prompt(`${detectWinner(board)} won!`);
+//     if(detectWinner(board) === 'Player') {
+//       playerWins += 1;
+//       console.log(playerWins);
+//     }
+//   } else {
+//     prompt(`It's a tie!`);
+//   }
+
+//   prompt('Play again? (y or n)');
+//   let answer = readline.question().toLowerCase()[0];
+//   if (answer !== 'y') break;
+// }
+
+// prompt('Thanks for playing Tic Tac Toe!');
 
 // Computer AI: Defense
-// The computer currently picks a square at random. 
-//That's not very interesting. 
 //Let's make the computer defensive-minded so that, when an immediate threat exists, 
 //it will try to defend the 3rd square. 
 //An immediate threat occurs when the human player has 2 squares in a row with the 3rd square unoccupied.
