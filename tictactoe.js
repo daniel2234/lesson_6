@@ -9,7 +9,7 @@ const MAX_TOTAL_SCORE = 5;
 function displayBoard(board) {
   console.clear(); //clears the node console when display
 
-  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}. Max Games to Play is ${MAX_TOTAL_SCORE}`);
+  console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}. Max plays best of ${MAX_TOTAL_SCORE}`);
 
   console.log('');
   console.log('     |     |');
@@ -117,89 +117,40 @@ function detectWinner(board) {
   return null;
 }
 
-
-// function playerWins() {
-//   return 1
-// }
-
-function computerWins() {
-  return 1;
-}
+let playerWins = 0;
+let computerWins = 0;
 
 while(true) {
-  let playerWins = 0;
-  let computerWins = 0;
-    while(true) {
-      let scorer;
-      let board = initializeBoard();
+  let board = initializeBoard();
 
-      while (true) {
-        displayBoard(board); 
-        playerSquaresBoard(board);
-        if(someoneWon(board) || boardFull(board)) break;
+  while (true) {
+    displayBoard(board); 
+    playerSquaresBoard(board);
+    if(someoneWon(board) || boardFull(board)) break;
 
-        computerSquaresBoard(board);
-        if(someoneWon(board) || boardFull(board)) break;
-      }
+    computerSquaresBoard(board);
+    if(someoneWon(board) || boardFull(board)) break;
+  }
 
-      displayBoard(board);
+  displayBoard(board);
 
-      if(someoneWon(board)) {
-        prompt(`${detectWinner(board)} won!`);
-        if(detectWinner(board) === 'Player') {
-          playerWins += 1;
-          console.log(playerWins);
-        } else if(detectWinner(board) === 'Computer'){
-          computerWins += 1;
-          console.log(computerWins);
-        }
-      } else {
-        prompt(`It's a tie!`);
-      }
-
-      prompt('Play again? (y or n)');
-      let answer = readline.question().toLowerCase()[0];
-      if (answer !== 'y') break;
+  if(someoneWon(board)) {
+    if (detectWinner(board) === 'Player'){
+      playerWins += 1;
+      console.log(playerWins);
     }
+    prompt(`${detectWinner(board)} won!`);
+  } else {
+    prompt(`It's a tie!`);
+  }
 
-    prompt('Thanks for playing Tic Tac Toe!');
 
+  prompt('Play again? (y or n)');
+  let answer = readline.question().toLowerCase()[0];
+  if (answer !== 'y') break;
 }
 
-// let playerWins = 0;
-// while(true) {
-//   // let playerWins = 0;
-//   let computerWins = 0;
-//   let scorer;
-//   let board = initializeBoard();
-
-//   while (true) {
-//     displayBoard(board); 
-//     playerSquaresBoard(board);
-//     if(someoneWon(board) || boardFull(board)) break;
-
-//     computerSquaresBoard(board);
-//     if(someoneWon(board) || boardFull(board)) break;
-//   }
-
-//   displayBoard(board);
-
-//   if(someoneWon(board)) {
-//     prompt(`${detectWinner(board)} won!`);
-//     if(detectWinner(board) === 'Player') {
-//       playerWins += 1;
-//       console.log(playerWins);
-//     }
-//   } else {
-//     prompt(`It's a tie!`);
-//   }
-
-//   prompt('Play again? (y or n)');
-//   let answer = readline.question().toLowerCase()[0];
-//   if (answer !== 'y') break;
-// }
-
-// prompt('Thanks for playing Tic Tac Toe!');
+prompt('Thanks for playing Tic Tac Toe!');
 
 // Computer AI: Defense
 //Let's make the computer defensive-minded so that, when an immediate threat exists, 
