@@ -12,7 +12,7 @@ const WINNING_LINES = [
   [1,5,9], [3,5,7],          //diagonals
 ];
 function displayBoard(board) {
-  console.clear();
+  // console.clear();
 
   console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}. Max plays best of ${MAX_TOTAL_SCORE}`);
 
@@ -85,12 +85,11 @@ function playerSquaresBoard(board) {
   board[square] = HUMAN_MARKER;
 }
 
-function findAtRiskSquare(line, board){
+function findAtRiskSquare(line, board, marker){
   let markersInLine = line.map(square => board[square]);
-
   console.log(markersInLine, 'markersInLine');
   
-  if(markersInLine.filter(val => val === HUMAN_MARKER).length === 2) {
+  if(markersInLine.filter(val => val === marker).length === 2) {
     let unusedSquare = line.find(square => board[square] === INITIAL_MARKER);
     if(unusedSquare !== undefined){
       return unusedSquare;
@@ -100,13 +99,25 @@ function findAtRiskSquare(line, board){
   return null;
 }
 
+//Finding a defensive-minded square means finding an empty square in a line where the other two squares belong to the human player.
+
+// Finding an offensive-minded square means finding an empty square in a line where the other two squares belong to the computer.
 function computerSquaresBoard(board) {
   let square;
-
+  //defense
   for (let index = 0; index < WINNING_LINES.length; index++) {
     let line = WINNING_LINES[index];
-    square = findAtRiskSquare(line, board);
+    square = findAtRiskSquare(line, board, HUMAN_MARKER);
+    console.log(square, 'square called');
     if (square) break;
+  }
+  //offense
+  if(!square){
+    for (let index = 0; index < WINNING_LINES.length; index++) {
+      let line = WINNING_LINES[index];
+      square = findAtRiskSquare(line, board, COMPUTER_MARKER);
+      if (square) break;
+    }
   }
 
   if(!square) {
