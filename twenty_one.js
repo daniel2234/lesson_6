@@ -100,28 +100,13 @@ function renderCard(card) {
   console.log(`+----------+ `);
 }
 
+function hitMe(deck, playerHand) {
+  // console.log(deck, 'this is the updated deck');
+  playerHand[0].push(['S', '7'])
+  console.log(playerHand, 'this is the player hand');
 
-// function displayDealerCards() {
-//   console.log(`Dealer Cards`)
-//   console.log(`+---------+    |    +---------+ `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+   ${'S'} ${10}   +    |    +   ${'H'} ${3}   + `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+---------+    |    +---------+ `);
-// }
+}
 
-// function displayPlayerCards() {
-//   console.log(`Player Cards`)
-//   console.log(`+---------+    |    +---------+ `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+   ${'A'} ${3}   +    |    +   ${'D'} ${3}   + `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+         +    |    +         + `);
-//   console.log(`+---------+    |    +---------+ `);
-// }
 
 let deck = createDeck();
 
@@ -130,8 +115,12 @@ console.log(shuffle(deck));
 console.log(deck);
 console.log('Player Hand');
 console.log(dealHand(deck));
+let playerHand = dealHand(deck);
 console.log('Dealer Hand')
 console.log(dealDealerHand(deck));
+let dealerHand = dealDealerHand(deck);
+
+console.log(hitMe(deck, playerHand));
 
 
 console.log(deck);
