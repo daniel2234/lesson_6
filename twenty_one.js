@@ -107,7 +107,6 @@ function hitMe(deck, playerHand) {
 
 }
 
-
 let deck = createDeck();
 
 console.log(deck);
