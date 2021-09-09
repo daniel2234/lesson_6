@@ -191,9 +191,3 @@ while (true) {
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
-
-// Computer AI: Defense
-//Let's make the computer defensive-minded so that, when an immediate threat exists, 
-//it will try to defend the 3rd square. 
-//An immediate threat occurs when the human player has 2 squares in a row with the 3rd square unoccupied.
-//If there's no immediate threat, the computer can pick a random square.
