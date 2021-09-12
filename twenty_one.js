@@ -9,12 +9,17 @@
 //future ideas
 //https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript
 
+
+//make one line card hands
+//https://replit.com/talk/ask/How-to-make-everything-on-one-line/40891
+
 const readline = require('readline-sync');
 
 //declare card elements
 let suits = ["S", "D", "C", "H"];
 let values = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
-
+let playerGameScore = 0;
+let dealerGameScore = 0;
 
 function createDeck(){
   //empty array to contains card
@@ -37,7 +42,7 @@ function dealHand(deck) {
   for (let i = 0; i < 2; i++){
     card = deck.pop();
     playerhand.push(card)
-    renderCard(card);
+    renderPlayerCard(card);
   }
   playerScore = total(playerhand);
   console.log(playerScore);
@@ -51,7 +56,7 @@ function dealDealerHand(deck) {
   for (let i = 0; i < 2; i++){
     dealerCard = deck.pop();
     dealerHand.push(dealerCard);
-    renderCard(dealerCard);
+    renderDealerCard(dealerCard);
   }
   dealerScore = total(dealerHand);
   console.log(dealerScore);
@@ -90,7 +95,7 @@ function shuffle(array) {
   return array
 }
 
-function renderCard(card) {
+function renderPlayerCard(card) {
   console.log(`+----------+ `);
   console.log(`+          + `);
   console.log(`+          + `);
@@ -100,30 +105,109 @@ function renderCard(card) {
   console.log(`+----------+ `);
 }
 
-function hitMe(deck, playerHand) {
-  // console.log(deck, 'this is the updated deck');
-  playerHand[0].push(['S', '7'])
-  console.log(playerHand, 'this is the player hand');
 
+function renderDealerCard(card) {
+  console.log(`+----------+ `);
+  console.log(`+          + `);
+  console.log(`+          + `);
+  console.log(`+   ${card[0]} ${card[1]}    +`);
+  console.log(`+          + `);
+  console.log(`+          + `);
+  console.log(`+----------+ `);
 }
 
-let deck = createDeck();
 
-console.log(deck);
-console.log(shuffle(deck));
-console.log(deck);
-console.log('Player Hand');
-console.log(dealHand(deck));
+// # TO_DO
+//hitme should update the total score
+function hitMe(deck, playerHand) {
+  let newTotal = 0;
+  let hitCard = deck.pop();
+  playerHand[0].push(hitCard);
+  console.log(playerHand);
+
+  newTotal = total(playerHand[0])
+  playerHand[0][1] = newTotal
+  renderPlayerCard(hitCard);
+  return playerHand[0][1];
+}
+
+function showScore(playerGameScore, dealerGameScore, playerHand, dealerHand) {
+  playerGameScore = playerHand[1];
+  dealerGameScore = dealerHand[1];
+  console.log(`Player Score: ${playerGameScore} Dealer Score: ${dealerGameScore}`);
+}
+
+let deck = createDeck(); //create the deck
+ 
+console.log(deck); // show deck
+console.log(shuffle(deck)); //shuffle the deck
+console.log(deck); //show shuffled deck
+
+
+console.log('Dealer Hand') //display dealer title hand
+console.log(dealDealerHand(deck)); //show dealerhand, one card and one unknown card
+
+
+// let dealerHand = dealDealerHand(deck); //deal dealer hand
+
+
+console.log('Player Hand'); //display player title hand
 let playerHand = dealHand(deck);
-console.log('Dealer Hand')
-console.log(dealDealerHand(deck));
-let dealerHand = dealDealerHand(deck);
+console.log(playerHand); // show player hand 
 
-console.log(hitMe(deck, playerHand));
+//ask to hit or stay?
 
 
-console.log(deck);
+//if hit 
+console.log(hitMe(deck, playerHand), 'this is called');
+// console.log(hitMe(deck, dealerHand));
 
+//if stay?
+
+
+// let playerHand = dealHand(deck); //deal player hand
+
+
+// console.log(hitMe(deck, playerHand));
+// console.log(hitMe(deck, dealerHand));
+
+// showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+
+// console.log(hitMe(deck, playerHand));
+// showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+
+
+// stay -> conditional calculates and ends game
+
+
+// console.log(deck);
+
+// 1. Initialize deck
+// 2. Deal cards to player and dealer
+// 3. Player turn: hit or stay
+//    - repeat until bust or stay
+// 4. If player bust, dealer wins.
+// 5. Dealer turn: hit or stay
+//    - repeat until total >= 17
+// 6. If dealer busts, player wins.
+// 7. Compare cards and declare winner.
+
+// while(true) {
+//   console.log('Welcome to Twenty One!')
+
+//   let deck = createDeck(); //create the deck
+//   console.log(shuffle(deck)); //shuffle the deck
+//   console.log('Dealer Hand') //display dealer title hand
+//   console.log(dealDealerHand(deck)); //show dealerhand, one card and one unknown card
+//   console.log('Player Hand'); //display player title hand
+//   console.log(dealHand(deck)); // show player hand 
+
+//   console.log('(h)it or (s)tay')
+//   let answer = readline.question();
+//   if (answer === 'hit' || answer === 'h'){
+//       hitMe(deck, playerHand)
+//   }
+// }
 
 // while (true) {
 //   prompt("hit or stay?");
