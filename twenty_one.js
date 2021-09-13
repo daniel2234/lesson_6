@@ -116,19 +116,14 @@ function renderDealerCard(card) {
   console.log(`+----------+ `);
 }
 
-
-// # TO_DO
-//hitme should update the total score
 function hitMe(deck, playerHand) {
   let newTotal = 0;
   let hitCard = deck.pop();
   playerHand[0].push(hitCard);
-  console.log(playerHand);
-
   newTotal = total(playerHand[0])
-  playerHand[0][1] = newTotal
+  playerHand[1] = newTotal
   renderPlayerCard(hitCard);
-  return playerHand[0][1];
+  return playerHand;
 }
 
 function showScore(playerGameScore, dealerGameScore, playerHand, dealerHand) {
@@ -137,19 +132,24 @@ function showScore(playerGameScore, dealerGameScore, playerHand, dealerHand) {
   console.log(`Player Score: ${playerGameScore} Dealer Score: ${dealerGameScore}`);
 }
 
-let deck = createDeck(); //create the deck
- 
-console.log(deck); // show deck
-console.log(shuffle(deck)); //shuffle the deck
-console.log(deck); //show shuffled deck
+function busted(playerGameScore, dealerGameScore) {
+  if (playerGameScore > 21){
+    return 'BUST'
+  }
+}
 
+function stay(playerGameScore, dealerGameScore) {
+  if (dealerGameScore <= 17 ) {
+    //hit dealer until 18>= and =<21
+  }
+}
+
+let deck = createDeck(); //create the deck
+shuffle(deck); //shuffle the deck
 
 console.log('Dealer Hand') //display dealer title hand
-console.log(dealDealerHand(deck)); //show dealerhand, one card and one unknown card
-
-
-// let dealerHand = dealDealerHand(deck); //deal dealer hand
-
+let dealerHand = dealDealerHand(deck); //deal dealer hand
+console.log(dealerHand);
 
 console.log('Player Hand'); //display player title hand
 let playerHand = dealHand(deck);
@@ -157,40 +157,35 @@ console.log(playerHand); // show player hand
 
 //ask to hit or stay?
 
-
 //if hit 
-console.log(hitMe(deck, playerHand), 'this is called');
-// console.log(hitMe(deck, dealerHand));
+playerHand = hitMe(deck, playerHand);
+console.log(playerHand, 'first hand called');
+console.log('second hit');
+playerHand = hitMe(deck, playerHand);
+console.log(playerHand, 'second hand called.');
 
-//if stay?
+//if stay 
+dealerHand = hitMe(deck, dealerHand);
+console.log(dealerHand, 'this the dealer hand');
 
-
-// let playerHand = dealHand(deck); //deal player hand
-
-
-// console.log(hitMe(deck, playerHand));
-// console.log(hitMe(deck, dealerHand));
-
-// showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
-
-// console.log(hitMe(deck, playerHand));
-// showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+//if dealerscore is less than 17
+dealerHand = hitMe(deck, dealerHand);
+dealerHand = hitMe(deck, dealerHand);
+//dealer should try to hit an stay between 17 and 21
 
 
-// stay -> conditional calculates and ends game
+showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
 
+console.log(playerHand[1], 'check hand logic to determine score');
+console.log(dealerHand[1], 'check hand logic for dealer to determine score');
 
-// console.log(deck);
-
-// 1. Initialize deck
-// 2. Deal cards to player and dealer
-// 3. Player turn: hit or stay
-//    - repeat until bust or stay
-// 4. If player bust, dealer wins.
-// 5. Dealer turn: hit or stay
-//    - repeat until total >= 17
-// 6. If dealer busts, player wins.
-// 7. Compare cards and declare winner.
+// 3. Player turn: hit or stay //DONE Hit //DONE Stay -> then dealer goes
+//    - repeat until bust or stay //DONE //TO_DO need to do logic for bust or stay
+// 4. If player bust, dealer wins. //TO_DO
+// 5. Dealer turn: hit or stay //DONE hit logic, //TO_DO to stay logic
+//    - repeat until total >= 17 //TO_DO need to check less than or equal logic
+// 6. If dealer busts, player wins. //TO_DO
+// 7. Compare cards and declare winner. //TO_DO
 
 // while(true) {
 //   console.log('Welcome to Twenty One!')
