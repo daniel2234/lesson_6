@@ -17,7 +17,7 @@ const readline = require('readline-sync');
 
 //declare card elements
 let suits = ["S", "D", "C", "H"];
-let values = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
+let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q","K"]
 let playerGameScore = 0;
 let dealerGameScore = 0;
 
@@ -133,6 +133,7 @@ function showScore(playerGameScore, dealerGameScore, playerHand, dealerHand) {
 }
 
 function busted(playerGameScore, dealerGameScore) {
+  console.log('called');
   if (playerGameScore > 21){
     return 'BUST'
   }
@@ -144,40 +145,16 @@ function stay(playerGameScore, dealerGameScore) {
   }
 }
 
-let deck = createDeck(); //create the deck
-shuffle(deck); //shuffle the deck
-
-console.log('Dealer Hand') //display dealer title hand
-let dealerHand = dealDealerHand(deck); //deal dealer hand
-console.log(dealerHand);
-
-console.log('Player Hand'); //display player title hand
-let playerHand = dealHand(deck);
-console.log(playerHand); // show player hand 
-
-//ask to hit or stay?
-
-//if hit 
-playerHand = hitMe(deck, playerHand);
-console.log(playerHand, 'first hand called');
-console.log('second hit');
-playerHand = hitMe(deck, playerHand);
-console.log(playerHand, 'second hand called.');
-
-//if stay 
-dealerHand = hitMe(deck, dealerHand);
-console.log(dealerHand, 'this the dealer hand');
-
 //if dealerscore is less than 17
-dealerHand = hitMe(deck, dealerHand);
-dealerHand = hitMe(deck, dealerHand);
+// dealerHand = hitMe(deck, dealerHand);
+// dealerHand = hitMe(deck, dealerHand);
 //dealer should try to hit an stay between 17 and 21
 
 
-showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+// showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
 
-console.log(playerHand[1], 'check hand logic to determine score');
-console.log(dealerHand[1], 'check hand logic for dealer to determine score');
+// console.log(playerHand[1], 'check hand logic to determine score');
+// console.log(dealerHand[1], 'check hand logic for dealer to determine score');
 
 // 3. Player turn: hit or stay //DONE Hit //DONE Stay -> then dealer goes
 //    - repeat until bust or stay //DONE //TO_DO need to do logic for bust or stay
@@ -187,28 +164,40 @@ console.log(dealerHand[1], 'check hand logic for dealer to determine score');
 // 6. If dealer busts, player wins. //TO_DO
 // 7. Compare cards and declare winner. //TO_DO
 
-// while(true) {
-//   console.log('Welcome to Twenty One!')
+while(true) {
+  console.log('Welcome to Twenty One!')
 
-//   let deck = createDeck(); //create the deck
-//   console.log(shuffle(deck)); //shuffle the deck
-//   console.log('Dealer Hand') //display dealer title hand
-//   console.log(dealDealerHand(deck)); //show dealerhand, one card and one unknown card
-//   console.log('Player Hand'); //display player title hand
-//   console.log(dealHand(deck)); // show player hand 
+  let deck = createDeck(); //create the deck
+  console.log(shuffle(deck)); //shuffle the deck
 
-//   console.log('(h)it or (s)tay')
-//   let answer = readline.question();
-//   if (answer === 'hit' || answer === 'h'){
-//       hitMe(deck, playerHand)
-//   }
-// }
+  console.log('Dealer Hand') //display dealer title hand
+  let dealerHand = dealDealerHand(deck); //deal dealer hand
+  console.log(dealerHand);
 
-// while (true) {
-//   prompt("hit or stay?");
-//   let answer = readline.question();
-//   if (answer === 'hit') {
-//     hitCard();
-//   }
-//   if (answer === 'stay') break;
-// }
+  console.log('Player Hand'); //display player title hand
+  let playerHand = dealHand(deck);
+  console.log(playerHand); // show player hand 
+
+  while(true) {
+    console.log("(h)it or (s)tay?");
+    let answer = readline.question();
+    if (answer === 'hit' || answer === 'h') {
+      playerHand = hitMe(deck, playerHand);
+      showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+      if (playerHand[1] > 21) break;
+    } else if ( answer === 'stay' || answer === 's') {
+      dealerHand = hitMe(deck, dealerHand);
+      showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+    }
+  }
+
+  console.log('Do you want to play again (y/n)?');
+  let answer = readline.question().toLowerCase();
+  while (answer[0] !== 'n' && answer[0] !== 'y') {
+    console.log('Please enter "y" or "n".');
+    answer = readline.question().toLowerCase();
+  }
+
+  if (answer[0] !== 'y') break;
+
+}
