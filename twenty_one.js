@@ -132,38 +132,6 @@ function showScore(playerGameScore, dealerGameScore, playerHand, dealerHand) {
   console.log(`Player Score: ${playerGameScore} Dealer Score: ${dealerGameScore}`);
 }
 
-function busted(playerGameScore, dealerGameScore) {
-  console.log('called');
-  if (playerGameScore > 21){
-    return 'BUST'
-  }
-}
-
-function stay(playerGameScore, dealerGameScore) {
-  if (dealerGameScore <= 17 ) {
-    //hit dealer until 18>= and =<21
-  }
-}
-
-//if dealerscore is less than 17
-// dealerHand = hitMe(deck, dealerHand);
-// dealerHand = hitMe(deck, dealerHand);
-//dealer should try to hit an stay between 17 and 21
-
-
-// showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
-
-// console.log(playerHand[1], 'check hand logic to determine score');
-// console.log(dealerHand[1], 'check hand logic for dealer to determine score');
-
-// 3. Player turn: hit or stay //DONE Hit //DONE Stay -> then dealer goes
-//    - repeat until bust or stay //DONE //TO_DO need to do logic for bust or stay
-// 4. If player bust, dealer wins. //TO_DO
-// 5. Dealer turn: hit or stay //DONE hit logic, //TO_DO to stay logic
-//    - repeat until total >= 17 //TO_DO need to check less than or equal logic
-// 6. If dealer busts, player wins. //TO_DO
-// 7. Compare cards and declare winner. //TO_DO
-
 while(true) {
   console.log('Welcome to Twenty One!')
 
@@ -186,8 +154,12 @@ while(true) {
       showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
       if (playerHand[1] > 21) break;
     } else if ( answer === 'stay' || answer === 's') {
-      dealerHand = hitMe(deck, dealerHand);
-      showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);
+        while (dealerHand[1] <= 21) {
+          if(dealerHand[1] >= 17) break;
+          dealerHand = hitMe(deck, dealerHand);
+        }
+      showScore(playerGameScore, dealerGameScore, playerHand, dealerHand);  
+      if(dealerHand[1] >= 17) break;
     }
   }
 
